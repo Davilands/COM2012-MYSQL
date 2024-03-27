@@ -1,0 +1,124 @@
+----------------------
+
+CREATE TABLE NhanVien (
+    Manhanvien varchar(255) PRIMARY KEY,
+    Hoten varchar(255),
+    Maphongban varchar(255) REFERENCES ,
+);
+CREATE TABLE PhongBan (
+    Maphongban varchar(255) PRIMARY KEY,
+    Tenphongban varchar(255),
+   Idvitri int REFERENCES ,
+);
+CREATE TABLE ViTri (
+    Idvitri int PRIMARY KEY,
+    Tenvitri varchar(255),
+);
+
+------
+INSERT INTO PhongBan
+values ('Pb1','Đào tạo',1),
+('Pb2','Tổ chức',1),
+('Pb3','Kế toán',1);
+
+INSERT INTO Vitri
+values (1,'Lầu 1'),
+(2,'Lầu 2'),
+(3,'Lầu 3');
+
+INSERT INTO NhanVien
+values ('Nv01','Nguyen van A','pb1'),
+
+values ('Nv02','Nguyen van B','pb1'),
+values ('Nv03','Tran van C','pb3'),
+values ('Nv04','Tran van D','pb3');
+
+-------
+UPDATE NhanVien 
+SET 
+   Hoten = 'Le van D'
+WHERE
+    Manhanvien = 'Nv04';
+-------
+DELETE FROM NhanVien 
+WHERE 
+	Manhanvien = 'Nv04';
+
+------
+SELECT Hoten FROM NhanVien 
+	WHERE  Manhanvien = 'nv02';
+
+-----
+SELECT Hoten, Tenphongban FROM NhanVien, PhongBan 
+	WHERE NhanVien.Maphongban = Phongban.Maphongban;
+
+-----
+SELECT NhanVien.Hoten, PhongBan.Tenphongban FROM
+	NhanVien, PhongBan WHERE PhongBan.TenPhongban = 'tổ chức'; 
+
+-----
+SELECT PhongBan.Maphongban, (SELECT COUNT (NhanVien.MaNhanVien) 
+		AS 'Tổng số nhân viên' FROM NhanVien 
+WHERE Phongban.Maphongban = NhanVien.maphongban ) 
+	FROM NhanVien, PhongBan	;
+
+-----
+SELECT Phongban.Maphongban, PhongBan.Tenphongban, PhongBan.Idvitri 
+	 FROM PhongBan, NhanVien  
+	WHERE (PhongBan.Maphongban NOT IN NhanVien.Maphongban)
+
+
+--------------------------------------------------
+
+
+CREATE TABLE Persons (
+    PersonID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255)
+);
+CREATE TABLE nguoi (
+    id int,
+    ten varchar(255),
+    ho varchar(255),
+    diachi varchar(255)
+);
+ALTER TABLE nguoi
+ADD COLUMN moi varchar(255);
+
+ALTER TABLE nguoi 
+DROP COLUMN moi;
+
+ALTER TABLE nguoi
+ADD CONSTRAINT tuoi
+CHECK (tuoi > 1)
+
+ALTER TABLE nguoi
+ADD CONSTRAINT khoachinh PRIMARY KEY (id);
+
+ALTER TABLE sodienthoai
+ADD FOREIGN KEY (chusohuu) REFERENCES nguoi(id);
+
+ALTER TABLE sodienthoai
+ADD CONSTRAINT khoachinh PRIMARY KEY (sdt);
+Đang hiển thị 1614202301309284865.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

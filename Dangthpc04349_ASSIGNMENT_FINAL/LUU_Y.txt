@@ -1,0 +1,10 @@
+
+
+
+Trẩn Hữu Đang MSSV: pc04349
+
+
+- Toàn bộ scr code lưu tại file : Dangthpc04349_ASSIGNMENT_GD2.docx
+
+- Bảng và các Khóa được lưu tại : CSDL_QuanLiXuatKho.sql.mwb
+			     và : QuanLiKhachHang.accdb    

@@ -1,0 +1,74 @@
+create database mahocvien;
+
+CREATE TABLE NhanVien (
+    Manhanvien VARCHAR(5) PRIMARY KEY,
+    Hoten VARCHAR(50) NOT NULL,
+    Maphongban VARCHAR(5) REFERENCES PhongBan (Maphongban)
+);
+
+CREATE TABLE Phongban (
+    Maphongban VARCHAR(5) PRIMARY KEY,
+    Tenphongban VARCHAR(50) NOT NULL,
+    Idvitri DOUBLE REFERENCES ViTri (Idvitri)
+);
+
+CREATE TABLE ViTri (
+    Idvitri DOUBLE PRIMARY KEY,
+    Tenvitri VARCHAR(50)
+);
+
+insert into vitri
+values(1,'Lầu 1'),
+(2,'Lầu 2'),
+(3,'Lầu 3');
+
+insert into phongban
+values('Pb1','Đào tạo',1),
+('Pb2','Tổ chức',1),
+('Pb3','Kế toán',2);
+
+insert into nhanvien
+values('Nv01','Nguyen Van A','Pb1'),
+('Nv02','Nguyen Van B','Pb1'),
+('Nv03','Tran Van C','Pb3'),
+('Nv04','Tran Van D','Pb3');
+
+update nhanvien set Hoten = 'Le Van D'
+where Manhanvien = 'Nv04';
+
+delete from nhanvien where
+Manhanvien = 'Nv04';
+
+select Hoten from nhanvien where Manhanvien = 'Nv02';
+
+select nhanvien.Hoten, phongban.Tenphongban from 
+nhanvien, phongban where nhanvien.Maphongban = phongban.Maphongban;
+
+BACKUP DATABASE testDB
+TO DISK = 'D:\backups\testDB.bak';
+
+SELECT 
+    nhanvien.Hoten, phongban.Tenphongban
+FROM
+    nhanvien,
+    phongban
+WHERE
+    nhanvien.Maphongban = phongban.Maphongban
+        AND phongban.Tenphongban = 'Tổ chức';
+
+select Maphongban, count(Manhanvien) as 'Số lượng'
+from nhanvien
+group by Maphongban;
+ 
+SELECT 
+    *
+FROM
+    phongban
+WHERE
+    Maphongban NOT IN (SELECT 
+            nhanvien.Maphongban
+        FROM
+            nhanvien
+                INNER JOIN
+            phongban ON nhanvien.Maphongban = phongban.Maphongban);
+

@@ -1,0 +1,127 @@
+
+		--FINAL TEST CSDL--
+
+
+--Tạo 1 cơ sở dữ liệu có tên là mã học viên ( VD: PC12345)--
+create database PC04349;
+
+
+
+
+--Viết các câu lệnh tạo 3 bảng, khóa chính + khóa ngoại--
+
+CREATE TABLE SanPham (
+    Masanpham VARCHAR(5) PRIMARY KEY,
+    Tensanpham VARCHAR(50) NOT NULL,
+    Giasanpham INT ,
+    Maloai VARCHAR(5) REFERENCES Maloai (Loai)
+);
+
+CREATE TABLE Loai (
+    MaLoa VARCHAR(5) PRIMARY KEY,
+   TenLoai VARCHAR(50) NOT NULL,
+    MaViTri VARCHAR(5) REFERENCES Vitri (MaViTri)
+);
+
+CREATE TABLE ViTri (
+    MaViTri VARCHAR(5) PRIMARY KEY,
+   TenViTri VARCHAR(50) NOT NULL
+);
+
+
+
+--Viết câu lệnh insert dữ liệu vào trong bảng--
+
+insert into vitri
+values('VT1', 'Kho 1'),
+      ('VT2', 'Kho 2'),
+      ('VT3', 'Kho 3');
+
+insert into Loai
+values('L1', 'Bánh', 'VT1'),
+      ('L2', 'Kẹo', 'VT3'),
+      ('L3', 'Nước ngọt', 'VT3');
+
+
+insert into SanPham
+values('SP1', 'Bánh Danisa', 75000, 'L1'),
+      ('SP2', 'Bánh Kinh Đô', 70000, 'L1'),
+      ('SP3', 'Pepsi', 10000 ,'L3'),
+      ('SP4', 'Kẹo dẻo', 5000, 'L2');
+
+
+
+--Câu 2--
+
+--Viết câu lệnh update tên sản phẩm là “Kẹo dừa” cho sản phẩm có mã là SP4.--
+
+update SanPham set Tensanpham = 'Kẹo dừa'
+where MasanPham  = 'SP4';
+
+
+
+--Viết câu lệnh xóa sản phẩm có mã là SP4.--
+
+delete from Sanpham  
+where MasanPham  = 'SP4';
+
+
+
+--Viết câu lệnh Backup csdl với tên csdl Backup là “masinhvien_ Backup”--
+BACKUP DATABASE PC04349
+TO DISK = 'D:\PC04349_ Backup.bak';
+
+
+
+--Viết câu truy vấn Hiển thị Tên sản phẩn, giá sản phẩm của sản phẩm có mã là SP3--
+
+SELECT Tensanpham, giasanpham 
+FROM SanPham
+WHERE MasanPham  = 'SP3';
+
+
+
+--Viết câu truy vấn Hiển thị Tên sản phẩn, giá sản phẩm, tên loại và vị trí của sản phẩm đó--
+
+SELECT SanPham.Tensanpham, SanPham.giasanpham, Loai.Tenloai, ViTri.tenvitri 
+FROM SanPham, Loai, Vitri
+WHERE SanPham.MaLoai = Loai.Maloai 
+      AND Loai.Mavitri = ViTri.Mavitri;
+
+
+
+--Viết câu truy vấn Hiển thị Tên sản phẩn, giá sản phẩm, tên loại và vị trí của sản phẩm đó với
+điều kiện sản phẩm hiển thị chỉ thuộc loại là Kẹo--
+
+SELECT SanPham.Tensanpham, SanPham.giasanpham, Loai.Tenloai, ViTri.tenvitri
+FROM SanPham, Loai, Vitri
+WHERE TenSanPham SanPham.MaLoai = Loai.Maloai 
+      AND Loai.Mavitri = ViTri.Mavitri 
+      AND LIKE '%Kẹo%';
+
+
+
+--Viết câu truy vấn Đến số sản phẩm đang bán theo mã loại.--
+
+select tensanpham, count(MaLoai) as 'Số sản phẩm'
+from SanPham
+group by tensanpham;
+
+
+
+--Viết câu truy vấn hiển thị thông tin sản phẩn có giá cao nhất--
+
+select * from SanPham 
+where TOP1 (Giasanpham);
+
+
+
+--Viết câu truy vấn Hiển thị thông tin Loại sản phẩm mà không có sản phẩm đang bán--
+
+select * from Loai
+where 
+    MaLoai NOT IN ( SELECT 
+                            Loai.MaLoai 
+                          FROM Loai INNER JOIN SanPham
+                            ON  SanPham.MaLoai = Loai.MaLoai ) ;
+
